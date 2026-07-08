@@ -2,9 +2,8 @@
 
 Tipsy kangaROO: a Reversible Jump Markov chain Monte Carlo (RJMCMC) sampler for compact-binary-coalescence gravitational-wave signals. Based on [eryn](https://github.com/mikekatz04/Eryn) and [bilby](https://github.com/bilby-dev/bilby).
 
-<img width="953" height="949" alt="t-roo_name" src="https://github.com/user-attachments/assets/a1f8db76-2b17-4fd4-a3e7-3905c55ba21f" />
+<img width="500" height="500" alt="t-roo_name" src="https://github.com/user-attachments/assets/a1f8db76-2b17-4fd4-a3e7-3905c55ba21f" />
 
-### Description ###
 
 ***A story about a tipsy kangaroo: Reversible jump MCMC for model selection in the analysis of gravitational-wave signals from the coalescence of compact objects***
 
