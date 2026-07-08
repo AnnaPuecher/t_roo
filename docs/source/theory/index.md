@@ -1,3 +1,5 @@
+# Theory
+
 ```{toctree}
 :maxdepth: 2
 
@@ -5,6 +7,5 @@
 
 rjmcmc
 t-roo proposals
-
 ```
 
