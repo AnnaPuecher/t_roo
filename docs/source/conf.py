@@ -23,10 +23,12 @@ extensions = [
     "sphinx.ext.napoleon",
 ]
 
+
 autodoc_default_options = {
     "members": True,
     "undoc-members": True,
     "private-members": True,
+    "imported-members": True,
     "show-inheritance": True,
 }
 
