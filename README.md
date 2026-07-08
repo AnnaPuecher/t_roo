@@ -1,14 +1,14 @@
 # t-roo #
 
-**t**ipsy kanga**roo**: a Reversible Jump Markov chain Monte Carlo (RJMCMC) sampler for compact-binary-coalescence gravitational-wave signals. Based on [eryn](https://github.com/mikekatz04/Eryn) and [bilby](https://github.com/bilby-dev/bilby).
-
-*kangaroo* because it recalls the *jump* in ``reversible jump", and for consistency with Australian names for samplers such as bilby and dingo. The kangaroo is *tipsy* because it not only jumps, but it also *reverse* jumps.
+**t**ipsy kanga**roo**[^1]: a Reversible Jump Markov chain Monte Carlo (RJMCMC) sampler for compact-binary-coalescence gravitational-wave signals. Based on [eryn](https://github.com/mikekatz04/Eryn) and [bilby](https://github.com/bilby-dev/bilby).
 
 <img width="300" height="300" alt="t-roo_name" src="https://github.com/user-attachments/assets/a1f8db76-2b17-4fd4-a3e7-3905c55ba21f" />
 
 ***A story about a tipsy kangaroo: Reversible jump MCMC for model selection in the analysis of gravitational-wave signals from the coalescence of compact objects***
 
 Once upon a time, there was a cute kangaroo who was studying gravitational waves signals. Some signals were very complicated, so the kangaroo could not understand what source they were coming from... was it a BBH, a NSBH, a BNS? Walking through each model and then look at the different results was taking too much time. A bit discouraged, the kangaroo decided to go out for drinks with his friends. After a few drinks, the kangaroo decided to jump between the different models instead of just walking through them, it would have been much more fun. Since it was a bit tipsy, the kangaroo started jumping back and forth, with back flips and reverse jumps. And this is how the tipsy kangaroo found the best way to jump between models to understand the source of the GWs, and it finally became a happy t-roo.
+
+[^1]: *kangaroo* because it recalls the *jump* in ``reversible jump", and for consistency with Australian names for samplers such as bilby and dingo. The kangaroo is *tipsy* because it not only jumps, but it also *reverse* jumps.
 
 ### Installation
 
