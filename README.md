@@ -25,10 +25,14 @@ cd t_roo/t_roo
 pip install .
 ```
 
-Issues:
-- Currently conda-installed bilby can give the following error `ImportError: cannot import name 'btdtri' from 'scipy.special._ufuncs'`
-  Can be solved by installing bilby versions > 2.5
-- to avoid conflicts with numpy deprecations bilby >= 2.7
-- bilby is developed and tested for python 3.10-3.12 (for example pythonv3.14 gives issues with importing astropy)
+### Documentation
+
+Complete documentation can be found here:
+
+Example scripts to run t-roo on injections and real data are provided in
 
 ### Citation
+
+### Acknowledgements
+
+The project logo was created with the assistance of ChatGPT (OpenAI).
