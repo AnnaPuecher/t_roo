@@ -55,4 +55,5 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "furo"
+html_logo = "images/t-roo_name.png"
 html_static_path = ['_static']
