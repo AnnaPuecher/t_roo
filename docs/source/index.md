@@ -15,6 +15,13 @@ The code is hosted here: https://github.com/AnnaPuecher/t_roo
 
 The related paper is: 
 
+```{toctree}
+:maxdepth: 2
+
+getting_started/index
+theory/index
+api/index
+```
 
 ## Citing
 
