@@ -30,10 +30,14 @@ autodoc_default_options = {
     "private-members": True,
     "imported-members": True,
     "show-inheritance": True,
+    "member-order": "bysource",
+    "exclude-members": "__weakref__",
 }
 
 autodoc_typehints = "description"
 autodoc_preserve_defaults = True
+autodoc_typehints = "description"
+autodoc_typehints_format = "short"
 
 
 
