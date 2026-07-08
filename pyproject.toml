@@ -1,0 +1,32 @@
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pyright]
+reportIncompatibleMethodOverride = "warning"
+
+[project]
+name = "t-roo"
+description = "Reversible Jump MCMC for GW signals from CBC with NSBH, BBH, and BNS waveforms"
+version = "0.0.1"
+readme = "README.md"
+authors = [{ name = "Anna Puecher", email = "anna.puecher@uni-potsdam.de"}, {name = "Hauke Koehn", email = "hauke.koehn@uni-potsdam.de"}]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["sampling", "inference", "astrophysics", "gravitational waves", "neutron stars", "waveform models", "model selection"]
+requires-python = ">=3.10"
+dependencies = [
+    "h5py",
+    "tqdm",
+    "matplotlib",
+    "scipy",
+    "bilby", 
+    "gwpy",
+    "lalsuite",
+    "corner",
+    "pandas",
+    "pytest",
+]

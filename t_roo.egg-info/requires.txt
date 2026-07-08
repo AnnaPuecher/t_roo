@@ -1,0 +1,10 @@
+h5py
+tqdm
+matplotlib
+scipy
+bilby
+gwpy
+lalsuite
+corner
+pandas
+pytest
