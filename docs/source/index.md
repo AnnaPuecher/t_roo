@@ -2,7 +2,7 @@
 
 ## t-roo
 
-```{image} images/t-roo.png
+```{image} images/t-roo_name.png
 :alt: logo
 :width: 600px
 :align: center
