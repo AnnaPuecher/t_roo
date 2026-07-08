@@ -23,6 +23,12 @@ extensions = [
     "sphinx.ext.napoleon",
 ]
 
+autodoc_default_options = {
+    "members": True,
+    "undoc-members": True,
+    "show-inheritance": True,
+}
+
 source_suffix = {
     ".rst": "restructuredtext",
     ".md": "markdown",
