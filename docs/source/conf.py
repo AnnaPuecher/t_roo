@@ -26,8 +26,14 @@ extensions = [
 autodoc_default_options = {
     "members": True,
     "undoc-members": True,
+    "private-members": True,
     "show-inheritance": True,
 }
+
+autodoc_typehints = "description"
+autodoc_preserve_defaults = True
+
+
 
 source_suffix = {
     ".rst": "restructuredtext",
