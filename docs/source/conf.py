@@ -56,4 +56,10 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 html_theme = "furo"
 html_logo = "images/t-roo_name.png"
+
+html_theme_options = {
+    "navigation_with_keys": True,
+    "sidebar_hide_name": False,
+}
+
 html_static_path = ['_static']
