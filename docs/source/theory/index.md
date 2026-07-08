@@ -2,8 +2,7 @@
 
 ```{toctree}
 :maxdepth: 2
-
-:caption: Theory
+:hidden:
 
 rjmcmc
 t-roo proposals
