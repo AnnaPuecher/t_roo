@@ -20,18 +20,31 @@ The related paper is:
 ```{toctree}
 :maxdepth: 2
 
+:caption: Getting Started
+
 installation
 examples
-api/modules
 ```
 ## Theory
+
+```{toctree}
+:maxdepth: 2
+
+:caption: Getting Started
+
+```
 
 ## API
 ```{toctree}
 :maxdepth: 3
 
+:caption: API
+
 api/modules
 ```
 
 ## Citing
-
+```{toctree}
+:maxdepth: 1
+:caption: Citing
+```
