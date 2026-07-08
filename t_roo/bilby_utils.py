@@ -1,3 +1,7 @@
+"""
+Wrappers to use bilby
+"""
+
 import bilby
 from bilby.gw.waveform_generator import WaveformGenerator
 import numpy as np
