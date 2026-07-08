@@ -1,8 +1,7 @@
-#Getting started
+# Getting started
 
 ```{toctree}
-:maxdepth: 2
-:hidden:
+:maxdepth: 1
 
 installation
 examples
