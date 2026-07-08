@@ -19,6 +19,7 @@ The related paper is:
 
 ```{toctree}
 :maxdepth: 2
+:includehidden:
 
 getting_started/index
 theory/index
