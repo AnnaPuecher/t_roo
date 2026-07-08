@@ -2,9 +2,9 @@
 
 **t**ipsy kanga**roo**: a Reversible Jump Markov chain Monte Carlo (RJMCMC) sampler for compact-binary-coalescence gravitational-wave signals. Based on [eryn](https://github.com/mikekatz04/Eryn) and [bilby](https://github.com/bilby-dev/bilby).
 
-<img width="300" height="300" alt="t-roo_name" src="https://github.com/user-attachments/assets/a1f8db76-2b17-4fd4-a3e7-3905c55ba21f" />
+*kangaroo* because it recalls the *jump* in ``reversible jump", and for consistency with Australian names for samplers such as bilby and dingo. The kangaroo is *tipsy* because it not only jumps, but it also *reverse* jumps.
 
-Regarding the name, \textit{kangaroo} was chosen to recall the \textit{jump} in ``reversible jump", and for consistency with Australian names for samplers such as \textsc{Bilby} and \textsc{Dingo}. The kangaroo is \textit{tipsy} because it not only jumps, but it also \textit{reverse} jumps.
+<img width="300" height="300" alt="t-roo_name" src="https://github.com/user-attachments/assets/a1f8db76-2b17-4fd4-a3e7-3905c55ba21f" />
 
 ***A story about a tipsy kangaroo: Reversible jump MCMC for model selection in the analysis of gravitational-wave signals from the coalescence of compact objects***
 
