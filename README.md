@@ -4,6 +4,7 @@
 
 <img width="300" height="300" alt="t-roo_name" src="https://github.com/user-attachments/assets/a1f8db76-2b17-4fd4-a3e7-3905c55ba21f" />
 
+Regarding the name, \textit{kangaroo} was chosen to recall the \textit{jump} in ``reversible jump", and for consistency with Australian names for samplers such as \textsc{Bilby} and \textsc{Dingo}. The kangaroo is \textit{tipsy} because it not only jumps, but it also \textit{reverse} jumps.
 
 ***A story about a tipsy kangaroo: Reversible jump MCMC for model selection in the analysis of gravitational-wave signals from the coalescence of compact objects***
 
