@@ -4,5 +4,6 @@
 :maxdepth: 1
 
 installation
-examples
+inj_example
+data_example
 ```
