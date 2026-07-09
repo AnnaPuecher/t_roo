@@ -77,9 +77,22 @@ where the last term is the Jacobian corresponding to the mapping between states 
 ### RJMCMC algorithm
 
 In a RJMCMC algorithm, at each sampler iterations for each chain we have
+
 1. **Within-model move**: update the parameters of the chain staying in the same model. This can be done with a "standard" Metroplois-Hastings algorithm. One needs to define a proposal function for the move, and then decide whether to accept the new point or not with the acceptance probability in Eq.{eq}`eq:acc_mh`
 
+```{image} images/within_models.png
+:alt: within
+:width: 300px
+:align: center
+```
 
+2. **Between-model move**: propose a jump to a different model, updating $k$ and $\vec{\tehta}_k$ at the same time. For this step one needs to define the mapping $h$ and its inverse $h'$. The jump is then accepted or rejected based on the acceptance probability in Eq.{eq}`acc_rjmcmc`, with the Jacobian term of the mapping $h$ (or $h'$ for the inverse move).
+
+```{image} images/between_models.png
+:alt: betw
+:width: 300px
+:align: center
+```
 
 
 
