@@ -37,6 +37,11 @@ autodoc_default_options = {
     "exclude-members": "__weakref__",
 }
 
+myst_enable_extensions = [
+    "dollarmath",
+    "amsmath",
+]
+
 autodoc_typehints = "description"
 autodoc_preserve_defaults = True
 autodoc_typehints = "description"
