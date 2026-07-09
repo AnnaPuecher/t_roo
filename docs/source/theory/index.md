@@ -4,6 +4,6 @@
 :maxdepth: 1
 
 rjmcmc
-t-roo proposals
+troo_proposals
 ```
 

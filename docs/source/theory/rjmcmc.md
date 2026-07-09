@@ -82,15 +82,15 @@ In a RJMCMC algorithm, at each sampler iterations for each chain we have
 
 ```{image} ../images/within_models.png
 :alt: within
-:width: 300px
+:width: 600px
 :align: center
 ```
 
-2. **Between-model move**: propose a jump to a different model, updating $k$ and $\vec{\tehta}_k$ at the same time. For this step one needs to define the mapping $h$ and its inverse $h'$. The jump is then accepted or rejected based on the acceptance probability in Eq.{eq}`acc_rjmcmc`, with the Jacobian term of the mapping $h$ (or $h'$ for the inverse move).
+2. **Between-model move**: propose a jump to a different model, updating $k$ and $\vec{\theta}_k$ at the same time. For this step one needs to define the mapping $h$ and its inverse $h'$. The jump is then accepted or rejected based on the acceptance probability in Eq.{eq}`acc_rjmcmc`, with the Jacobian term of the mapping $h$ (or $h'$ for the inverse move).
 
 ```{image} ../images/between_models.png
 :alt: betw
-:width: 300px
+:width: 600px
 :align: center
 ```
 
