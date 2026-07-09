@@ -25,6 +25,7 @@ extensions = [
     "sphinxcontrib.bibtex"
 ]
 
+bibtex_bibfiles = ["references.bib"]
 
 autodoc_default_options = {
     "members": True,
