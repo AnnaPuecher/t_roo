@@ -37,3 +37,14 @@ Example scripts to run t-roo on injections and real data are provided in
 ### Acknowledgements
 
 The project logo was created with the assistance of ChatGPT (OpenAI).
+
+## Acknowledgements
+
+We acknowledge funding from the EU Horizon under ERC Starting Grant, no.SMArt-101076369. Views and opinions expressed are those of the authors only and do not necessarily reflect those of the European Union or the European Research Council. Neither the European Union nor the granting authority can be held responsible for them.
+
+```{image} docs/source/images/LOGO_ERC-FLAG_EU.png
+:alt: logo
+:width: 600px
+:align: center
+```
+
