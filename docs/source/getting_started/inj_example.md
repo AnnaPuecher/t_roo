@@ -62,3 +62,142 @@ stopping_prel_kwargs ={
 Defines the stopping criterion. By default we use a fixed number of steps, that is here specified via the argument `n_steps`. With `verbose:True` the sampler progress is periodically printed in the .out file.   
 
 
+Next we need to define the moves to use in t-roo, both the within-model and between-model one:
+```
+move = WithinModelStretchMove(branch_names=models,
+                              binary_types=binary_types,
+                              live_dangerously=True)
+
+rj_move = GWBinariesRJ(branch_names=models,
+                       binary_types=binary_types,
+                       steps_jump_params=200,
+                       epsilon = 0.2)
+```
+In the RJ move, `steps_jump_params` decides how many last samples of the preliminary sampling phase to use to compute the likelihood center-of-mass for the mass parameters proposals, while `epsilon` defines the range in which the auxiliary variables for the tidal parameters stretch moves are drawn, i.e., $[1-\epsilon, 1+\epsilon]$.
+
+Next we define the injection parameters to create the mock signal, as we would do in a bilby run
+```
+m1 = 1.4
+m2 = 1.4
+mchirp = bilby.gw.conversion.component_masses_to_chirp_mass(
+    m1, m2
+)
+mratio = m2 / m1
+
+injection_parameters = dict(
+    chirp_mass=mchirp,
+    mass_ratio=mratio,
+    geocent_time=trigger_time,
+    phase=1.3,
+    chi_1=0.01,
+    chi_2=0.02,
+    luminosity_distance=150.0,
+    theta_jn=1.57,
+    psi=2.659,
+    dec=-0.5,
+    ra=3.44,
+    lambda_2 = 600,
+    lambda_1 = 600.,
+    tilt_1=0.0,
+    tilt_2=0.0,
+    phi_12=0.0,
+    phi_jl=0.0,
+)
+```
+
+In t-roo, we can then specify if there are parameters that we want to keep fixed. For example, the IMRPhenomNSBH model always wants $\Lambda_1 = 0$, therefore we define
+```
+fixed_params = {"bbh": {},
+                "nsbh": {'lambda_1':0}, "bns": {}}
+```
+
+In the `main` function, we read-in the prior from the file and make sure that all the settings are consistent, for example when using distance or phase marginalization in the likelihood.
+
+We create the detector objects and inject the signal with the wrapper function `bilby_inject_gw_signal` as 
+```
+ifos = bilby_inject_gw_signal(injection_parameters=injection_parameters,
+                          waveform_approximant=inj_waveform,
+                          duration=duration,
+                          minimum_frequency=minimum_frequency,
+                          maximum_frequency=maximum_frequency,
+                          interferometers=["H1", "L1", "V1"],
+                          sampling_frequency=sampling_frequency,
+                          fix_phenomnsbh=fix_phenomnsbh,
+                   )
+```
+where `fix_phenomnsbh=True` takes care of the minus sign in the amplitude of IMRPhenomNSBH.
+
+With the function `check_parameter_order` we create the priors containers and the list of names corresponding to each parameters, that will be used later in the likelihood wrapper and in the sampler routines:
+```
+priors, parameter_names = check_parameter_order(priors)
+```
+
+
+We need to create the initial state of the chains as
+```
+state = initial_state_from_prior(priors,
+	                        nwalkers,
+                                ntemps)
+```
+where the initial values of the parameters are simply drawn from the prior, 
+and the dictionary with the dimensionality of each model
+```
+ndims = {model: len(parameter_names) for model in models}
+```
+
+We define the likelihood through a wrapper function that calls the bilby likelihood as
+```
+bilby_likelihood = BilbyGWLikelihood(models=models,
+                                         parameter_names=parameter_names,
+                                         waveforms=waveforms,
+                                         binary_types=binary_types,
+                                         interferometers=ifos,
+                                         duration=duration,
+                                         sampling_frequency=sampling_frequency,
+                                         reference_chirp_mass = 1.15,
+                                         reference_frequency = 20.,
+                                         minimum_frequency=minimum_frequency,
+                                         maximum_frequency=maximum_frequency,
+                                         reference_frame = ["H1", "L1", "V1"],
+                                         distance_marginalization=distance_marginalization,
+                                         phase_marginalization=phase_marginalization,
+                                         fix_phenomnsbh=fix_phenomnsbh,
+                                         fixed_params=fixed_params,
+                                         bilby_priors=bilby_priors)
+```
+Here specifically we are passing the argument `reference_chirp_mass` because the wrapper employs by default the mutlibanding likelihood `MBGravitationalWaveTransient` in bilby.
+
+Finally, we create the `EnsembleSampler` object and run it
+```
+ensemble = EnsembleSampler(
+            nwalkers,
+            ndims,
+            bilby_likelihood.bilbylik_wrap_rj,
+            priors,
+            parameter_names = parameter_names,
+            tempering_kwargs=tempering_kwargs,
+            nbranches=len(models),
+            branch_names=models,
+            outdir='outdir',
+            stopping_kwargs=stopping_kwargs,
+            stopping_prel_kwargs = stopping_prel_kwargs,
+            nleaves_max=nleaves_max,
+            nleaves_min=nleaves_min,
+            moves=move,
+            rj_moves= rj_move,
+            niter_check_proposal=None,
+            )
+
+        out = ensemble.run_mcmc(state, progress=True, thin_by=thin_by)
+```
+
+To run in parallel on `ncores`
+```
+with mp.Pool(ncores) as pool:
+	ensemble = EnsembleSampler(
+		 nwalkers,
+		...
+		pool=pool)
+
+	out = ensemble.run_mcmc(state, progress=True, thin_by=thin_by)
+```
