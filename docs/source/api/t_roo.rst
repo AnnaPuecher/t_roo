@@ -22,6 +22,7 @@ t\_roo.bilby\_utils module
    :members:
    :show-inheritance:
    :undoc-members:
+   :exclude-members: WaveformGenerator, bilby, np, logger
 
 t\_roo.cosmology module
 -----------------------
