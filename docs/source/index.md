@@ -1,7 +1,5 @@
 # Welcome to t-roo's documentation!
 
-## t-roo
-
 ```{image} images/t-roo_name.png
 :alt: logo
 :width: 300px

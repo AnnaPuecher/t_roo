@@ -1,12 +1,12 @@
-"""
-Wrappers to use bilby
-"""
-
 import bilby
 from bilby.gw.waveform_generator import WaveformGenerator
 import numpy as np
 
 from .logging import logger
+
+"""
+Module with the wrappers to use bilby functions for the detectors and the likelihood.
+"""
 
 
 def bilby_inject_gw_signal(injection_parameters:dict,
