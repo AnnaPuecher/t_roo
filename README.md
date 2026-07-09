@@ -2,7 +2,7 @@
 
 **t**ipsy kanga**roo**[^1]: a Reversible Jump Markov chain Monte Carlo (RJMCMC) sampler for compact-binary-coalescence gravitational-wave signals. Based on [eryn](https://github.com/mikekatz04/Eryn) and [bilby](https://github.com/bilby-dev/bilby).
 
-<img width="300" height="300" alt="t-roo_name" src="https://github.com/user-attachments/assets/a1f8db76-2b17-4fd4-a3e7-3905c55ba21f" />
+<img width="300" height="300" alt="t-roo_name" class="center-image" src="https://github.com/user-attachments/assets/a1f8db76-2b17-4fd4-a3e7-3905c55ba21f" />
 
 ***A story about a tipsy kangaroo: Reversible jump MCMC for model selection in the analysis of gravitational-wave signals from the coalescence of compact objects***
 
@@ -40,7 +40,7 @@ The project logo was created with the assistance of ChatGPT (OpenAI).
 
 We acknowledge funding from the EU Horizon under ERC Starting Grant, no.SMArt-101076369. Views and opinions expressed are those of the authors only and do not necessarily reflect those of the European Union or the European Research Council. Neither the European Union nor the granting authority can be held responsible for them.
 
-<img width="1163" height="501" alt="LOGO_ERC-FLAG_EU" src="https://github.com/user-attachments/assets/6bc996d7-1674-41c2-bae1-c6ee51676c64" />
+<img width="727" height="313" alt="LOGO_ERC-FLAG_EU" src="https://github.com/user-attachments/assets/6bc996d7-1674-41c2-bae1-c6ee51676c64" />
 
 
 
