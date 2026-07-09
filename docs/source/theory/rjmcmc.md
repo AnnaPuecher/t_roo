@@ -4,12 +4,12 @@ Bayesian inference is commonly employed in gravitational-wave (GW) data analysis
 Reversible jump Markov chain Monte Carlo (RJMCMC) {cite}`rjmcmc` is a particular instance of MCMC samplers that allows one to compare also models with different dimensionalities. In the following we summarize the key features of RJMCMC samplers; a more detailed description can be found in Appenix A of the paper:
 
 When we analyze some data $d$ with a model $\mathcal{H}$ with parameters $\vec{\theta}_k$, the parameters' posterior probabilities are obtained via the Bayes theorem
-$$
+```{math}
 p(\vec{\theta}_k | d, \mathcal{H}) = \frac{\mathcal{L}(d|\vec{\theta}_k, \mathcal{H} p(\vec{\theta}_k | \mathcal{H}))}{p(d | \mathcal{H})},
-$$
+```
 where $\mathcal{L} (d | \vec{\theta}_k, \mathcal{H})$ is the *likelihood*, $p(\vec{\theta}_k | \mathxal{H})$ the prior, and $p(d|\matchal{H})$ the evidence.
 
-To compare two models $\mathca{H}_A$ and $\mathcal{H}_B$, to see which one decribes the data best, one usually computes the *odds ratio* 
+To compare two models $\mathcal{H}_A$ and $\mathcal{H}_B$, to see which one decribes the data best, one usually computes the *odds ratio* 
 $$
 \mathcal{O}_A^B = \frac{p(d|\mathcal{H}_B) p(\mathcal{H}_B)}{p(d|\mathcal{H}_A p(\mathcal{H}_A))},
 $$ 
