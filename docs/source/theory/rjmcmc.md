@@ -30,6 +30,10 @@ where $n_k$ is the number of sampels in that specific model. Consequently, the o
 \mathcal{O}_A^B = \frac{n_B}{n_A}.
 ```
 
+This yields a potentially significant computational gain, especially when comparing many models or analyzing informative data, which make it easier for t-roo (or RJMCMC samplers) to understand which are the favored models.
+
+In only one run, t-roo returns the probability for all the models considered and the posteriors for the parameters under the favored model. The posteriors for highly disfavored models appear very scattered, because, as expected, the walkers spend very little time in models that the sampler deems disfavored, i.e., not a good description of the data.
+
 ##### Metropolis-Hastings algorithm
 
 The Metropolis-Hastings algorithm for MCMC samplers includes two steps. Assume that the chain with limiting distribution $\pi$ (the limiting distribution is the sampling target) is in a point $x_i$ and wants to go to the next point $x_{i+1}$; we need to
