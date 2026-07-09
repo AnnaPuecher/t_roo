@@ -24,8 +24,24 @@ def bilby_inject_gw_signal(injection_parameters:dict,
 
     """
     Function to deal with signal injections like bilby does.
-    TODO(COMMENTED FOR NOW BECAUSE WE HAVE MODIFIED LAL): We add a +pi to the phase if the waveform approximant is IMRPhenomNSBH because of the minus sign
-    in front of the amplitude in its LALSuite implementation.
+
+    Args:
+        injection_parameters(dict): The dictionary of parameters to use to simulate the signal
+        waveform_approximant(str): Model to use to simulate the injected signal
+        duration(float): signal duratio
+        minimum_frequency(float): minimum frequency for the detector data in Hz (default: 20)
+        maximum_frequency(float): maximum frequency for the detector data in Hz (default: 2048)
+        reference_frequency(float): waveform reference frequency in Hz (default: 20)
+        interferometers(list): list of detectors in which to inject the mock signal (default: ["H1", "L1", "V1"])
+        sampling_frequency(float): sampling frequency in Hz (default: 4096)
+        zeronoise(bool): flag to decide whether to run in zero noise (default:False)
+        fix_phenomnsbh(bool): flag to take care of the minus sign in front of IMRPhenomNSBH amplitude (default:False)
+        psd_files(dict): dictionary of PSD files to use as synthetic detector noise (default: None) 
+        asd_files(dict): dictionary of ASD files to use as synthetic detector noise (default: None)
+    
+    Returns:
+        ifo objects with synthetic data and injected simulated signal.
+
     """
 
     if "NSBH" in waveform_approximant or "NRTidal" in waveform_approximant:
