@@ -40,7 +40,7 @@ The project logo was created with the assistance of ChatGPT (OpenAI).
 
 We acknowledge funding from the EU Horizon under ERC Starting Grant, no.SMArt-101076369. Views and opinions expressed are those of the authors only and do not necessarily reflect those of the European Union or the European Research Council. Neither the European Union nor the granting authority can be held responsible for them.
 
-<img width="727" height="313" alt="LOGO_ERC-FLAG_EU" src="https://github.com/user-attachments/assets/6bc996d7-1674-41c2-bae1-c6ee51676c64" />
+<img width="485" height="209" alt="LOGO_ERC-FLAG_EU" src="https://github.com/user-attachments/assets/6bc996d7-1674-41c2-bae1-c6ee51676c64" />
 
 
 
