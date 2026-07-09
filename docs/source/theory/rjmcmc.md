@@ -30,20 +30,57 @@ where $n_k$ is the number of sampels in that specific model. Consequently, the o
 \mathcal{O}_A^B = \frac{n_B}{n_A}.
 ```
 
-### Metropolis-Hastings algorithm
+##### Metropolis-Hastings algorithm
 
-The Metropolis-Hastings algorithm for MCMC samplers includes two steps. Assume that the chain with limiting distribution $\pi$ (the limiting distribution is what we sample) is in a point $x_i$ and wants to go to the next point $x_{i+1}$; we need to
+The Metropolis-Hastings algorithm for MCMC samplers includes two steps. Assume that the chain with limiting distribution $\pi$ (the limiting distribution is the sampling target) is in a point $x_i$ and wants to go to the next point $x_{i+1}$; we need to
 
 - Propose the new point from the proposal distribution $q(x_{i+1}|x_i)$ (the new points depends only on the currrent one since in Markov chains each state depends on the previous one and only on that)
-- Decide whether to accept the new point or not. Fot this purpose, we compute an **acceptance probability** $\alpha(x_i, x_{i+1})$, the draw a random number $r \in [0,1]$
-	- if $\alpha \ge r$: the new point is accepted
-	- i $\alpha(x_i, x_{i+1}) < r$: the new point is rejected and the chain stays in $x_i$
+- Decide whether to accept the new point or not. For this purpose, we compute an **acceptance probability** $\alpha(x_i, x_{i+1})$, then draw a random number $r \in [0,1]$
+	- if $\alpha(x_i, x_{i+1}) \ge r$: the new point is accepted
+	- if $\alpha(x_i, x_{i+1}) < r$: the new point is rejected and the chain stays in $x_i$
 
 
 The generally employed expression of the acceptance probability is
 ```{math}
-\alpha(x_i, x_{i+1}) = \min \left\{ 1, \frac{\pi(x_{i+1} q(x_i | x_{i+1}))}{\pi(x_{i+1}) q(x_{i}|x_{i+1}) } \right}
+\alpha(x_i, x_{i+1}) = \min \left\{ 1, \frac{\pi(x_{i+1} q(x_i | x_{i+1}))}{\pi(x_{i+1}) q(x_{i}|x_{i+1}) } \right\},
 ```
+and is derived to ensure that the **detailed balance** condition is fulfilled. Detailed balance basically means that the probability of being in one state $x$ and going to a state $x'$ must be the same as being in $x'$ and going back to $x$. This condition is the baisis of MCMC algorithms because it ensures that the limiting distribution of the Markov chains is stationary.
+
+
+### The trans-dimensional case
+
+
+Assume we want to move from a state $x$, described by a model $k$ with parameters $\vec{\theta}_k$ with dimension $n_k$, to a state $x'$ with a model $k'$ and $n_{k$'}$-dimensional parameters $\vec{\theta}_{k'}$, where we could have $n_k \neq n_{k'}$.
+
+The idea the algorithm proposed by Green is to include some so-called **auxiliary variables**, the random variables $\vec{u}$ in the space of set $x$ and $\vec{u}'$ in $x'$. $\vec{u}$ is drawn from a ditribution $g(\vec{u})$ and has dimension $r$, while $\vec{u}\$ is drawn from $g'(\vec{u}')$ and has dimension $r'$.
+We then define a deterministic mappring between the set of a state and its auxilary variables and the other one, i.e.
+```{math}
+(x', \vec{u}') = h(x, \vec{u}) \hspace{1cm} (x, \vec{u}) = h'(x', \vec{u'}).
+```
+
+The auxiliary variables and their distributions can be chosen arbitrarily, with the only condition that
+```{math}
+n_k + r = n_{k'} + r'.
+```
+This so-called  **dimension matching** condition ensures that the mapping $h$ is a diffeomorphism, which in turn is needed to ensure detailed balance.
+Looking at a generalized version of the Metropolis-Hastings algorithm for moves between these two sets, the idea is that now every new point proposal probability is simply given by the probability of the drawn auxiliary variable, since then the mapping is deterministic.
+
+Therefore, one can re-derive the acceptance probability for such trans-dimensional moves as
+```{math}
+\alpha(x,x') = \min \left\{ 1, \frac{\pi(x')g'(\vec{u}')}{\pi(x)g(\vec{u})} \left| \frac{\partial h(x,\vec{u})}{\partial(x,\vec{u})} \right|  \right},
+```
+where the last term is the Jacobian corresponding to the mapping between states and auxiliary variables.
+
+
+
+
+
+
+
+
+
+
+
 
 
 
