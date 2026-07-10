@@ -20,14 +20,6 @@ t\_roo.moves.red\_blue\_for\_rj module
    :show-inheritance:
    :undoc-members:
 
-t\_roo.moves.rj module
-----------------------
-
-.. automodule:: t_roo.moves.rj
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
 t\_roo.moves.rj\_proposal\_gwbinaries module
 --------------------------------------------
 
