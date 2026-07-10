@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+Moves module
+"""
 
 from ..state import BranchSupplimental
 import numpy as np
