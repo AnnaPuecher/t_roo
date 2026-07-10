@@ -68,6 +68,9 @@ class RedBlueMove(Move, ABC):
                 all other subsets. This is the compliment whose ``coords`` are
                 used to form the proposal for the ``sample`` subset.
             random (object): Current random state of the sampler.
+            inds_block_proposal(str or list): list of indices corresponding to the parameters 
+                 need to be updated at this step. Added for block sampling, if 'all' all the
+                 parameters are updated together.
             gibbs_ndim (int or np.ndarray, optional): If Gibbs sampling, this indicates
                 the true dimension. If given as an array, must have shape ``(ntemps, nwalkers)``.
                 See the tutorial for more information.

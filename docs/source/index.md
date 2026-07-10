@@ -5,7 +5,7 @@
 :width: 300px
 :align: center
 ```
-`t-roo` is a reversible jump Markov chain Monte Carlo sampler for the analysis of gravittaional-wave signals from the coalescence of compact binary coalescences. It analyzes the same data with multiple models at the same time, even with with different dimensionalities, providing in the end the models probabilities and the parameters posteriors for the favored models.
+`t-roo` is a reversible jump Markov chain Monte Carlo sampler for the analysis of gravitational-wave signals from the coalescence of compact binary coalescences. It analyzes the same data with multiple models at the same time, even with with different dimensionalities, providing in the end the models probabilities and the parameters posteriors for the favored models.
 
 Based on [eryn](https://github.com/lisa-analysis-tools/Eryn) and [bilby](https://github.com/bilby-dev/bilb).
 
@@ -39,7 +39,7 @@ We acknowledge funding from the EU Horizon under ERC Starting Grant, no.SMArt-10
 
 ```{image} images/LOGO_ERC-FLAG_EU.png
 :alt: logo
-:width: 600px
+:width: 300px
 :align: center
 ```
 

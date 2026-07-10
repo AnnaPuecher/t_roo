@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
 
+"""
+Contains the actual proposals for the between-model moves
+to compare different models describing BNS, BBH, and NSBH systems, 
+including jumps between models for the same source class.
+"""
+
 from ssl import ALERT_DESCRIPTION_NO_RENEGOTIATION
 import numpy as np
 import copy
@@ -24,8 +30,10 @@ class GWBinariesRJ(ReversibleJumpMove):
         Args:
             branch_names (list[str]): names of the branches (i.e. models) that are used in the ensemble sampler
             binary_types (list[str] | dict[str, str]): binary types of the corresponding branches. If a dict, the keys have to be branch names with values in 'bbh', 'nsbh', 'bns'.
+            model_priors (list[str]): priors for the models, for now we always assume models with the same probability (default: None).
             epsilon (float): Interval to draw the stretch parameters from. Defaults to 0.1.
-            steps_jump_params (int): number of final steps of the preliminary sampling among which the maximum values are picked to compute the slopes
+            steps_jump_params (int): number of final steps of the preliminary sampling to consider to find the chirp mass-mass ratio - lambda tilde 
+                likelihood-center of mass for the computation of the slopes for the chirp mass and mass ratio proposals. 
             *args: args to be passed to ReversibleJumpMove
             **kwargs: kwargs to be passed to ReversibleJumpMove
         '''
@@ -86,9 +94,8 @@ class GWBinariesRJ(ReversibleJumpMove):
                 proposed coordinates. Second entry is the new ``inds`` array with
                 boolean values flipped for added or removed sources. Third entry
                 is the factors associated with the
-                proposal necessary for detailed balance. This is effectively
-                any term in the detailed balance fraction. +log of factors if
-                in the numerator. -log of factors if in the denominator.
+                proposal necessary for detailed balance, including the probability of
+                the auxiliary variables and the Jacobian.
 
         """
 
@@ -140,7 +147,17 @@ class GWBinariesRJ(ReversibleJumpMove):
                       inds_to_change, 
                       random):
         """
-        Decides which coordinate map to use based on the source type models involved in the proposal.
+        Decides which coordinate map to use based on the source type models involved in the proposal
+        and uses it to get the new coordinates and the move factors.
+        Args:
+            old_coords(np.ndarray): coordinates of the current states, i.e., coordinates that we want to change, 
+                with shape [ntemps, nwalkers, nleaves_max, ndim].
+            current_branch (str): name of the current branch (we update the position of all the walkers in a given branch at a time).
+            proposed_branch (str): name of the branch (model) to which we want to propose a jump.
+            inds_to_change (np.ndarray): inds of coordinates to change.
+            random (object): Current random state of the sampler.
+        Returns:
+            new coordinates, move factors
         """
 
         coordinate_changer = self.get_coordinate_map(self.binary_types[current_branch], 
@@ -150,6 +167,10 @@ class GWBinariesRJ(ReversibleJumpMove):
 
     def synchronize_with_sampler(self, ensemble_sampler):
 
+        """
+        Synchromize with ensemble attributes and prepare what is needed for the move,
+        such as computing the slopes needed for the chirp mass and mass ratio proposals.
+        """
         self.temperature_control = ensemble_sampler.temperature_control
         self.nleaves_min = ensemble_sampler.nleaves_min
         self.nleaves_max = ensemble_sampler.nleaves_max
@@ -166,17 +187,27 @@ class GWBinariesRJ(ReversibleJumpMove):
         self._get_additional_jump_parameters(ensemble_sampler.backend_prel, self.steps_jump_params)
 
     def update_proposal(self, ensemble_sampler):
-
+        """
+        Updates the slopes for the chirp mass and mass ratio proposals. This could be used after 
+        a given number of iterations, when the sampler should have a better estimate of the parameters.
+        However more factors are needed to ensure that detailed balance is not violates, so this
+        is currently not used.
+        """
         self._get_additional_jump_parameters(ensemble_sampler.backend, self.steps_jump_params)
 
     def propose_branch(self, current_branch: str, random) -> tuple[str, float]:
         """
         Handles the selection of which branch to jump to.
         Makes sure that the probability is equally split between the number of sources and not models.
+        Currently in t-roo we use the same number of models for each source class, so all models
+        have the same probability.
         
         Args:
             current_branch (str): The current branch from which to jump from
             random (np.random.Generate): random generator object
+        Returns:
+            proposed branch (str): name of the branch to which we propose the jump.
+            log_factor(float): potential factor related to the branch choice to ensure detailes balance.
         """
         
         current_index = self.branch_names.index(current_branch)
@@ -204,7 +235,13 @@ class GWBinariesRJ(ReversibleJumpMove):
     def get_coordinate_map(self, 
                            current_binary_type: str,
                            proposed_binary_type: str):
-        
+        """
+        Decides which deterministic map h (or h') to use based on current and proposed model.
+        Args:
+        current_binary_type (str): source class of the current model.
+        proposed_binary_type (str): source class of the proposed model.
+        """
+
         dispatch = {
             "bbh": {
                 "bbh": self.identity,
@@ -231,16 +268,27 @@ class GWBinariesRJ(ReversibleJumpMove):
             )
     
     def identity(self, old_coords, inds_to_change, random):
+        """
+        Mapping that keeps all coordinates the same.
+        Used for jumps between models describing the same type of source.
+        Args:
+            old_coords (np.ndarray): coordinates to change.
+            inds_to_change (np.ndarray): inds of coordinates to change.
+        Returns:
+            new coords, log_factor
+        """
+
         coords_change = old_coords[inds_to_change].copy()
         num_change = inds_to_change.sum()
         factors_tot = np.zeros(shape=(num_change))
+        
         return coords_change, factors_tot
 
     
     def bbh_to_nsbh(self, old_coords, inds_to_change, random):
         
         """
-        This is the case where we are going from the bbh to nsbh models.
+        This is the case where we are going from the bbh to nsbh models (Eq.15 in arxiv:).
         The main parameter to be affected is Lambda_2, since it encodes the tidal information for the nsbh model.
         Lambda_2 is proposed with a stretch move, while Lambda_1 (which is a pseudo-parameter, i.e., a parameter that will not effectively enter the likelihood computation,
         for both bbh and nsbh models) is kept the same.
@@ -251,6 +299,13 @@ class GWBinariesRJ(ReversibleJumpMove):
         The complementary is chosen by picking a random walker among the other walkers of the other model, which is not changed at this stage
         (the ones with False indeces). Althouhg they might be switched on when jumping from a different model,
         this happens in a different for-loop step so this is safe also when running in parallel.
+        
+        Args:
+            old_coords (np.ndarray[ntemps, nwalkers, nleaves_max, ndim]): coordinates to change.
+            inds_to_change (np.ndarray[ntemps, nwalkers, nleaves_max]): positions of coordinate to change (where BBH is True).
+            random (np.random.Generate): random generator object.
+        Return:
+            new coordinates, move factors
         """
 
         num_change = inds_to_change.sum()
@@ -301,8 +356,14 @@ class GWBinariesRJ(ReversibleJumpMove):
     def nsbh_to_bbh(self, old_coords, inds_to_change, random):
 
         """
-        Proposal to go from nsbh to bbh models.
+        Proposal to go from nsbh to bbh models (Eq.B14 in arxiv:).
         It is the inverse of the mapping from bbh to nsbh.
+        Args:
+            old_coords (np.ndarray[ntemps, nwalkers, nleaves_max, ndim]): coordinates to change.
+            inds_to_change (np.ndarray[ntemps, nwalkers, nleaves_max]): positions of coordinate to change (where NSBH is True).
+            random (np.random.Generate): random generator object.
+        Return:
+            new coordinates, move factors
         """
 
         num_change = inds_to_change.sum()
@@ -358,15 +419,23 @@ class GWBinariesRJ(ReversibleJumpMove):
     def bbh_to_bns(self, old_coords, inds_to_change, random):
        
         """
-        This is the case where we are going from bbh to bns models.
+        This is the case where we are going from BBH to BNS models (Eq.B15 in arxiv: ).
         Lambda_1 and Lambda_2 are proposed with a stretch move.
-        We implement a specific chirp mass proposal to account for the differences induced by the presence or absence of tidal effects, based on lambda_tilde.
+        We implement a specific chirp mass and mass ratio proposals to account for the differences induced by the presence or absence of tidal effects, based on lambda_tilde.
         The symmetric mass ratio to compute Lambda_tilde can be computed from the old coordinates since it does not change in the between-model moves.
         All the other parameters are kept the same.
 
         The complementary is chosen by picking a random walker among the other walkers of the other model, which is not changed at this stage
         (the ones with False indeces). Althouhg they might be switched on when jumping from a different model,
         this happens in a different for-loop step so this is safe also when running in parallel.
+        
+        Args:
+            old_coords (np.ndarray[ntemps, nwalkers, nleaves_max, ndim]): coordinates to change.
+            inds_to_change (np.ndarray[ntemps, nwalkers, nleaves_max]): positions of coordinate to change (where BBH is True).
+            random (np.random.Generate): random generator object.
+        Return:
+            new coordinates, move factors
+
         """
 
         num_change = inds_to_change.sum()
@@ -433,8 +502,16 @@ class GWBinariesRJ(ReversibleJumpMove):
     def bns_to_bbh(self, old_coords, inds_to_change, random):
 
         """
-        Proposal to go from bns to bbh models.
-        Inverse of map from bbh to bns.
+        Proposal to go from BNS to BBH models (Eq.16 in arxiv:).
+        Inverse of map from BBH to BNS.
+
+        Args:
+            old_coords (np.ndarray[ntemps, nwalkers, nleaves_max, ndim]): coordinates to change.
+            inds_to_change (np.ndarray[ntemps, nwalkers, nleaves_max]): positions of coordinate to change (where BNS is True).
+            random (np.random.Generate): random generator object.
+        Return:
+            new coordinates, move factors
+
         """
 
         num_change = inds_to_change.sum()
@@ -503,10 +580,19 @@ class GWBinariesRJ(ReversibleJumpMove):
     def nsbh_to_bns(self, old_coords, inds_to_change, random):
        
         """
-        Proposal to go from nsbh to bns model.
+        Proposal to go from NSBH to BNS model (Eq.17 in arxiv:).
         Lambda1 and Lambda2 proposed with two separate stretch moves.
-        mchirp proposal now depends on both lambda_tilde in the bns and nsbh model (where the lambda_tilde in the nsbh model assumes lambda_1 = 0).
-        Complementary chosen as in the other cases.    
+        Mchirp proposal and mass ratio now depends on lambda_tilde in both the BNS and NSBH model 
+        (where the lambda_tilde in the NSBH model assumes lambda_1 = 0).
+        Complementary chosen as in the other cases. 
+
+        Args:
+            old_coords (np.ndarray[ntemps, nwalkers, nleaves_max, ndim]): coordinates to change.
+            inds_to_change (np.ndarray[ntemps, nwalkers, nleaves_max]): positions of coordinate to change (where NSBH is True).
+            random (np.random.Generate): random generator object.
+        Return:
+            new coordinates, move factors
+
         """
 
         num_change = inds_to_change.sum()
@@ -577,8 +663,16 @@ class GWBinariesRJ(ReversibleJumpMove):
     def bns_to_nsbh(self, old_coords, inds_to_change, random):
 
         """
-        Proposal to go from bns to nsbh models.
-        Inverse of map from nsbh to bns.
+        Proposal to go from BNS to NSBH models (Eq.B16 in arxiv:).
+        Inverse of map from NSBH to BNS.
+
+        Args:
+            old_coords (np.ndarray[ntemps, nwalkers, nleaves_max, ndim]): coordinates to change.
+            inds_to_change (np.ndarray[ntemps, nwalkers, nleaves_max]): positions of coordinate to change (where BNS is True).
+            random (np.random.Generate): random generator object.
+        Return:
+            new coordinates, move factors
+
         """
         num_change = inds_to_change.sum()
         idx_lambda1 = self.params_to_inds["lambda_1"]
@@ -644,10 +738,12 @@ class GWBinariesRJ(ReversibleJumpMove):
     def _get_additional_jump_parameters(self, saved_back, last_iters):
 
         """
-        Functon to find the slope for the linear interpolation in the chirp_mass between-models proposal and similar parameters.
+        Functon to find the slope for the linear interpolation in the chirp_mass and mass-ratio between-models proposal,
+        and to decide whether the chirp-mass proposal is needed.
 
         Args:
             saved_back (HDF5Backend): backend containing the posterior samples from the preliminary sampling run.
+            last_iters (int): number of last iterations to get samples from to compute quantities needed for the proposals.
         """
 
         ### Changed to take maximul likelihood among last 100 samples, can be fine-tuned or changed back to 30
@@ -745,6 +841,34 @@ class GWBinariesRJ(ReversibleJumpMove):
 
     def _posterior_center_of_mass(self,mc_mod1, mc_mod2, lam2_mod1, lam2_mod2, lam1_mod1, lam1_mod2, q_mod1, q_mod2, loglik_mod1, loglik_mod2):
 
+        """
+        Computes the chirp mass, mass ratio, and mass-weighted tidal deformability corresponding
+        to the likelihood center-of-mass for two models mod1 and mod2.
+        TODO: not sure why I did it for two models at the same time
+
+        Args:
+            mc_mod1 (list): chirp mass samples for model1.
+            mc_mod2 (list): chirp mass samples for model2.
+            lam2_mod1 (list): lambda_2 samples for model1.
+            lam2_mod2 (list): lambda_2 samples for model2.
+            lam1_mod1 (list): lambda_1 samples for model1.
+            lam1_mod2 (list): lambda_1 samples for model2.
+            q_mod1 (list): mass ratio samples for model1.
+            q_mod2 (list): mass ratio samples for model2.
+            loglik_mod1 (list): samples log likelihood for model1.
+            loglik_mod2 (list): samples log likelihood for model2.
+
+        Returns:
+            mc_com_mod1 (float): likelihood center-of-mass chirp mass for model1
+            mc_com_mod2 (float): likelihood center-of-mass chirp mass for model2
+            lambda2_com_mod1 (float): likelihood center-of-mass lambda_2 for model1
+            lambda2_com_mod2 (float): likelihood center-of-mass lambda_2 for model2
+            lambda1_com_mod1 (float): likelihood center-of-mass lambda_1 for model1
+            lambda1_com_mod2 (float): likelihood center-of-mass lambda_1 for model2
+            q_com_mod1 (float): likelihood center-of-mass mass ratio for model1
+            q_com_mod2 (float): likelihood center-of-mass mass ratio for model2
+        """
+
         mc_com_mod1 = 0.
         mc_com_mod2 = 0.
         q_com_mod1 = 0
@@ -803,9 +927,14 @@ class GWBinariesRJ(ReversibleJumpMove):
     def is_param_proposal_needed(self, param_mod1_samples,param_mod2_samples,param_com_mod1, param_com_mod2):
 
         """
-        Decide whether we need the chirp mass (mass ratio) proposal or no. For now we just check if the mchirp (mass ratio) posterior CoM is within 1sigma of the other posterior.
-        We can make it fancier by including some lambda information, the closer lambda is to 0, the less likely we are to need this proposal.
-        With the new why of computing the slope from the center of mass we might not even need this.
+        Decide whether we need the chirp mass proposal or no. For now we just check if the mchirp posterior CoM is within 1sigma of the other posterior.
+        Args:
+            param_mod1_samples (list): samples of the parameter for model1
+            param_mod2_samples (list): samples of the parameter for model2
+            param_com_mod1 (float): likelihood center-of-mass for the parameter in model1
+            param_com_mod2 (float): likelihood center-of-mass for the parameter in model2
+        Returns:
+            param_proposal_flag (bool)
         """
 
         if param_com_mod1 > np.quantile(param_mod2_samples,0.16) and param_com_mod1 < np.quantile(param_mod2_samples,0.84) and param_com_mod2 > np.quantile(param_mod1_samples,0.16) and param_com_mod2 < np.quantile(param_mod1_samples,0.84):

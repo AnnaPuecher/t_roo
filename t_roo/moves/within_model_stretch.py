@@ -29,9 +29,6 @@ class WithinModelStretchMove(RedBlueMove):
         rw_upper_limit (float, optional): Upper limit for random walk parameters (for lambdas default to 5000).
         kwargs (dict, optional): Additional keyword arguments passed down through :class:`RedRedBlueMove`_.
 
-    Attributes:
-        a (double): The stretch scale parameter.
-
     """
 
     def __init__(self, 
@@ -73,6 +70,10 @@ class WithinModelStretchMove(RedBlueMove):
     
     def synchronize_with_sampler(self, ensemble_sampler):
 
+        """
+        Prepares data needed by sampler: parameters names and indeces,
+        temperature control, and for which indeces a random walk is needed.
+        """
         self.temperature_control = ensemble_sampler.temperature_control
         if len(self.binary_types) != len(ensemble_sampler.branch_names):
             raise ValueError(f"WithinModelStretchMove has binaries {self.binary_types} which does not match ensemble sampler {ensemble_sampler.branch_names}")
@@ -136,7 +137,15 @@ class WithinModelStretchMove(RedBlueMove):
         """
         Random walk for the pseudo-parameters (lambda_1_bbh, lambda_2_bbh, lambda_1_nsbh)
         Same probability to move to smaller or larger values.
-        The random walk step can be adapeted to the analysis.
+        Args:
+            params(np.ndarray): parameters to which apply the random walk
+            random (object): Random state object.
+            lower_limit(float): lower allowed limit for the range of the parameters updated with random walk. 
+                If the value proposed by random walk goes below we just keep the current values.
+            upper_limit(float): upper allowed limit for the range of the parameters updated with random walk.
+                If the value proposed by random walk goes above we just keep the current values.
+        Returns:
+            parameters updated with random walk
         """
 
         walk_up = random.choice([False, True], size=params.shape)
@@ -154,6 +163,18 @@ class WithinModelStretchMove(RedBlueMove):
     
     def get_stretch_move(self, coords, compl, num_to_change, random, inds_stretch):
 
+        """
+        Stretch move to update parameters in the within-model moves.
+        Args:
+            coords (np.ndarray): coordinates of the states that we are updating in a specific model, shape(ntemps, num_change, nleaves_max, ndim).
+            compl (np.ndarray): coordinates of the complementary set of walkers, shape((ntemps, num_change, nleaves_max, ndim)).
+            num_to_change (int): number of points to change.
+            random (object): Random state object.
+            inds_stretch (list): list of indeces with the positions of parameters to be updated with the stretch move.
+
+        Returns:
+            tuple: new coordinates, log factor for symmetry condition
+        """
         zz = (
             (self.a - 1.0) * random.rand(num_to_change) + 1
         ) ** 2.0 / self.a
@@ -185,15 +206,15 @@ class WithinModelStretchMove(RedBlueMove):
             name (str): Branch name.
             s (np.ndarray): Points to be moved with shape ``(ntemps, Ns, nleaves_max, ndim)``.
             c_temp (np.ndarray): Compliment to move points with shape ``(ntemps, Ns, nleaves_max, ndim)``.
-            Ns (int): Number to generate.
+            num_change (int): Number to generate.
             branch_shape (tuple): Full branch shape.
-            branch_i (int): Which branch in the order is being run now. This ensures that the
-                randomly generated quantity per walker remains the same over branches.
             random_number_generator (object): Random state object.
-            inds_block_prop: list of indeces for parameters to update in block proposal
+            inds_block_prop: list of indeces for parameters to update in block proposal.
+            lower_rw: lower limit for the range of the parameters updated with a random walk.
+            upper_rw: upper limit for the range of the parameters updated with a random walk.
 
         Returns:
-            np.ndarray: New proposed points with shape ``(ntemps, Ns, nleaves_max, ndim)``.
+            np.ndarray: New proposed points with shape ``(ntemps, num_change, nleaves_max, ndim)``.
 
 
         """
@@ -224,7 +245,7 @@ class WithinModelStretchMove(RedBlueMove):
                 for which a proposal is to be generated.
             c_all (dict): Keys are ``branch_names`` and values are lists. These
                 lists contain all the complement array values.
-            inds_block_proposal: list of indices corresponding to the parameters that need to be updated
+            inds_block_proposal(str or list): list of indices corresponding to the parameters that need to be updated
                 in the block sampling.If 'all', all parameters are updated
             inds_all(dict): Keys are ``branch_names`` and values are lists or True/False
                 to show which model is used

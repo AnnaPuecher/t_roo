@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+Module to set up the class for the reversible jump move.
+"""
+
 from multiprocessing.sharedctypes import Value
 import numpy as np
 from copy import deepcopy
@@ -59,7 +63,7 @@ class ReversibleJumpMove(Move):
     def get_proposal(
         self, all_coords, all_inds, nleaves_min_all, nleaves_max_all, random, **kwargs
     ):
-        """Make a proposal
+        """Function to propose new points, needs to be overwritten by the specific move one.
 
         Args:
             all_coords (dict): Keys are ``branch_names``. Values are
@@ -97,6 +101,8 @@ class ReversibleJumpMove(Move):
         This helper function works with nested models where you want to add or remove
         one leaf at a time.
 
+        This was implemented in eryn and is currently not used by t-roo.
+
         Args:
             inds (np.ndarray): ``inds`` values for this specific branch with shape
                 ``(ntemps, nwalkers, nleaves_max)``.
@@ -115,7 +121,7 @@ class ReversibleJumpMove(Move):
         raise NotImplementedError
 
     def propose(self, model, state):
-        """Use the move to generate a proposal and compute the acceptance
+        """Use the specific rj move to generate a proposal and compute the acceptance
 
         Args:
             model (:class:`eryn.model.Model`): Carrier of sampler information.
