@@ -1,5 +1,9 @@
 import numpy as np
 
+"""
+Module for block sampling proposal. 
+Proposal cycle similar to the one in bilby mcmc.
+"""
 
 ##############################
 # TODO: add random to arguments

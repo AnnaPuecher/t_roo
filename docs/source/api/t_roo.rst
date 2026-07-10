@@ -13,6 +13,7 @@ Submodules
    :maxdepth: 1
 
    t_roo.bilby_utils
+   t_roo.block_sampling
    t_roo.cosmology
    t_roo.ensemble
    t_roo.logging
