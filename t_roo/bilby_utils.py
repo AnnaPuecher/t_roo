@@ -228,6 +228,8 @@ class BilbyGWLikelihood:
             phase_marginalization (bool): Whether to apply phase marginalization in the likelihoods. Defaults to True. 
             bilby_priors: bilby prior dict that is needed when marginalizing the likelihood over certaint parameters (phase, distance). Otherwise it will be ignored.
 
+        Raises:
+            ValueError if binary types are not provided correctly
         """
 
         self.models = models
@@ -300,9 +302,6 @@ class BilbyGWLikelihood:
         Wrapper to use bilby likelihood.
         Creates a dictionary with the parameters and the parameters names to update the likelihood parameters.
         not_nan_counter makes sure that only one model at a time as not None parameters and is therefore used.
-
-        TODO(COMMENTED FOR NOW BECAUSE WE ARE USING MODIFIED LAL): We add a +pi to the phase if the waveform approximant is IMRPhenomNSBH because of the minus sign
-        in front of the amplitude in its LALSuite implementation.
         """
 
         not_nan_counter = 0
