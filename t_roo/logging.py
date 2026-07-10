@@ -1,3 +1,6 @@
+"""
+Module to set up and handling logging 
+"""
 import logging
 import sys
 

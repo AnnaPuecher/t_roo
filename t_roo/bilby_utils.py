@@ -156,9 +156,11 @@ def bilby_ifos_from_real_data(frame_files: dict,
 class BilbyLikelihood_singlesource:
 
     """                                                                                                                                                                                       
-    TODO: CHANGE THIS TO BE SIMILAR TO THE MULTIODEL CLASS, OR ADAPT THE MULTIMODEL CLASS TO WORK ALSO WITH ONE MODEL ONLY
     Class to pass args to likelihood in the case of                                                                                                                                              
-    a single source (no rjmcmc) run                                                                                                                                                               
+    a single source (no rjmcmc) run  
+
+    TODO: change this to be similar to the multimodal class, or adapt the multimodal
+    class to work also with one model only.
     """
 
     def __init__(self, bilbylik,pnames):

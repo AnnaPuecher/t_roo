@@ -781,6 +781,31 @@ class EnsembleSampler(object):
                     thin_by=1, 
                     store=True):
         
+        """Preliminary sampling function, with within-model moves only.
+
+        Args:
+            initial_state (State or ndarray[ntemps, nwalkers, nleaves_max, ndim] or dict): The initial
+                :class:`State` or positions of the walkers in the
+                parameter space. If multiple branches used, must be dict with keys
+                as the ``branch_names`` and values as the positions. If ``betas`` are
+                provided in the state object, they will be loaded into the
+                ``temperature_control``.
+            thin_by(int): Take 1 sample every :thin-by: steps. Tp avoid correlated samples.
+                By default we save all the steps and if needed we thin them in post-processing
+            store (bool, optional): By default, the sampler stores in the backend
+                the positions (and other information) of the samples in the
+                chain. If you are using another method to store the samples to
+                a file or if you don't need to analyze the samples after the
+                fact (for burn-in for example) set ``store`` to ``False``. (default: ``True``)
+        Returns:
+            State: This generator yields the :class:`State` of the ensemble.
+
+        Raises:
+            ValueError: Improper initialization.
+
+        """
+
+
         # Interpret the input as a walker state and check the dimensions.
         state = State(initial_state, copy=True)
         state = self._check_input_state(state)
@@ -1022,7 +1047,7 @@ class EnsembleSampler(object):
 
         """
 
-        # TODO: this is a giant mess that needs to be redone (H.)
+        # TODO: needs to be re-written to parallelize things differently
 
         # if inds not provided, use all
         if inds is None:
@@ -1204,7 +1229,14 @@ class EnsembleSampler(object):
         return ll.reshape(ntemps, nwalkers), blobs_out
     
     def _check_input_state(self, state: State):
-        # Check the backend shape
+        
+        """
+        Check the input state to make sure that the backend shape and 
+        temperatures are compatible, If the state does not have 
+        log_prior or log_likelihood (None) they are computed.
+        """
+        
+        # check the backend shape
         for i, (name, branch) in enumerate(state.branches.items()):
             ntemps_, nwalkers_, nleaves_, ndim_ = branch.shape
             if (ntemps_, nwalkers_, nleaves_, ndim_) != (
