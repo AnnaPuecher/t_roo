@@ -1,4 +1,4 @@
-t\_roo.cosmology module
+t\_roo.cosmology
 -----------------------
 
 .. automodule:: t_roo.cosmology

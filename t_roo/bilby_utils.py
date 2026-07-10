@@ -185,6 +185,25 @@ class BilbyGWLikelihood:
     Class that handles the likelihood calls from the bilby classes.
     In this way we avoid passing arguments to the bilbyllhoodwrap, 
     making the (parallelized) code much faster. 
+
+    Args:
+            models (list[str]): names of branches used in the ensemble sampler.
+            parameter_names (list[str]): list of parameter names. The order in this list determines which column in the state array is interpreted as which likelihood parameter!
+            waveforms (list[str]): list of waveforms to use for the models.
+            binary_types (list[str] | dict[str, str]): which binary type the models are. Binary types can be 'bbh', 'nsbh', 'bns'.
+            interferometers (list): Interferometers carrrying the GW data.
+            duration (float): Duration of the signal.
+            reference chirp mass (float): reference chirp mass for multibanding likelihood.
+            fixed_params (dict): A dictionary containing certain parameters that are kept fixed in the likelihood.
+            reference_frequency: reference_frequency for waveform generator (default 20.0 Hz).
+            reference_frame: determines whether the sky location is sampled over ra and dec (default) or in azimuth and zenith (if list of interferometers is provided).
+            sampling_frequency (float): Sampling frequency for the frequency array. Defaults to 4096 Hz.
+            distance_marginalization (bool): Whether to apply distance marginalization in the likelihoods. Defaults to True.
+            phase_marginalization (bool): Whether to apply phase marginalization in the likelihoods. Defaults to True. 
+            bilby_priors: bilby prior dict that is needed when marginalizing the likelihood over certaint parameters (phase, distance). Otherwise it will be ignored.
+
+        Raises:
+            ValueError if binary types are not provided correctly
     """
 
     def __init__(self, 
@@ -212,24 +231,6 @@ class BilbyGWLikelihood:
         We use Multibanding likelihood to reduce the computational cost.
         (Potential future developments also with ROQs, RelativeBinning, and 'regular' likelihood)
 
-        Args:
-            models (list[str]): names of branches used in the ensemble sampler.
-            parameter_names (list[str]): list of parameter names. The order in this list determines which column in the state array is interpreted as which likelihood parameter!
-            waveforms (list[str]): list of waveforms to use for the models.
-            binary_types (list[str] | dict[str, str]): which binary type the models are. Binary types can be 'bbh', 'nsbh', 'bns'.
-            interferometers (list): Interferometers carrrying the GW data.
-            duration (float): Duration of the signal.
-            reference chirp mass (float): reference chirp mass for multibanding likelihood.
-            fixed_params (dict): A dictionary containing certain parameters that are kept fixed in the likelihood.
-            reference_frequency: reference_frequency for waveform generator (default 20.0 Hz).
-            reference_frame: determines whether the sky location is sampled over ra and dec (default) or in azimuth and zenith (if list of interferometers is provided).
-            sampling_frequency (float): Sampling frequency for the frequency array. Defaults to 4096 Hz.
-            distance_marginalization (bool): Whether to apply distance marginalization in the likelihoods. Defaults to True.
-            phase_marginalization (bool): Whether to apply phase marginalization in the likelihoods. Defaults to True. 
-            bilby_priors: bilby prior dict that is needed when marginalizing the likelihood over certaint parameters (phase, distance). Otherwise it will be ignored.
-
-        Raises:
-            ValueError if binary types are not provided correctly
         """
 
         self.models = models

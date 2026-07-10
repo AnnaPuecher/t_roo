@@ -1,4 +1,4 @@
-t\_roo.bilby\_utils module
+t\_roo.bilby\_utils
 =========================
 
 .. automodule:: t_roo.bilby_utils
