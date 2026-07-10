@@ -1,61 +1,20 @@
-t\_roo.utils
-====================
-
-Submodules
-----------
-
-t\_roo.utils.conversion module
-------------------------------
-
-.. automodule:: t_roo.utils.conversion
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-t\_roo.utils.periodic module
-----------------------------
-
-.. automodule:: t_roo.utils.periodic
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-t\_roo.utils.stopping module
-----------------------------
-
-.. automodule:: t_roo.utils.stopping
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-t\_roo.utils.transform module
------------------------------
-
-.. automodule:: t_roo.utils.transform
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-t\_roo.utils.updates module
----------------------------
-
-.. automodule:: t_roo.utils.updates
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-t\_roo.utils.utility module
----------------------------
-
-.. automodule:: t_roo.utils.utility
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-Module contents
----------------
+t_roo.utils
+===========
 
 .. automodule:: t_roo.utils
    :members:
    :show-inheritance:
    :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   t_roo.utils.conversion
+   t_roo.utils.periodic
+   t_roo.utils.stopping
+   t_roo.utils.transform
+   t_roo.utils.updates
+   t_roo.utils.utility

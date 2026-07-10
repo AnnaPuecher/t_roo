@@ -1,37 +1,17 @@
-t\_roo.prior
-====================
-
-Submodules
-----------
-
-t\_roo.prior.prior\_base module
--------------------------------
-
-.. automodule:: t_roo.prior.prior_base
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-t\_roo.prior.prior\_gw module
------------------------------
-
-.. automodule:: t_roo.prior.prior_gw
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-t\_roo.prior.prior\_utils module
---------------------------------
-
-.. automodule:: t_roo.prior.prior_utils
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-Module contents
----------------
+t_roo.prior
+===========
 
 .. automodule:: t_roo.prior
    :members:
    :show-inheritance:
    :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   t_roo.prior.prior_base
+   t_roo.prior.prior_gw
+   t_roo.prior.prior_utils
