@@ -18,3 +18,4 @@ Submodules
    t_roo.logging
    t_roo.model
    t_roo.pbar
+   t_roo.state
