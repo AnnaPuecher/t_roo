@@ -1,4 +1,4 @@
-t\_roo.prior package
+t\_roo.prior
 ====================
 
 Submodules

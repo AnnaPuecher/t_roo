@@ -1,4 +1,4 @@
-t\_roo.moves package
+t\_roo.moves
 ====================
 
 Submodules

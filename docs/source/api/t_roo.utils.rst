@@ -1,4 +1,4 @@
-t\_roo.utils package
+t\_roo.utils
 ====================
 
 Submodules
