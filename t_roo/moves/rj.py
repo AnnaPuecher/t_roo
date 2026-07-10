@@ -5,7 +5,6 @@ import numpy as np
 from copy import deepcopy
 from ..state import State
 from .move import Move
-from .delayedrejection import DelayedRejection
 from .distgen import DistributionGenerate
 
 __all__ = ["ReversibleJumpMove"]
