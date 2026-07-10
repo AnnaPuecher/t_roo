@@ -1,16 +1,5 @@
-t\_roo package
+t\_roo
 ==============
-
-Subpackages
------------
-
-.. toctree::
-   :maxdepth: 4
-
-   t_roo.backends
-   t_roo.moves
-   t_roo.prior
-   t_roo.utils
 
 Submodules
 ----------
