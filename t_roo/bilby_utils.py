@@ -111,6 +111,25 @@ def bilby_ifos_from_real_data(frame_files: dict,
                         sampling_frequency: float=4096,
                         ):
 
+    """
+    Function to load read data interferometers.
+
+    Args:
+        frame_files(dict): dictionary with the data frame files *.gwf; dictionary keys are the detectors names
+        channels(dict): dictionary with the channel names to read the data.; dictionary keys are the detectors names
+        psd_files(dict): dictionary with the estimated PSD curves files; dictionary keys are the detectors names
+        duration(float): signal duration
+        start_time(float): data starting gps time     
+        interferometers(list): list of detectors to use (default: ["H1", "L1", "V1"])
+        sampling_frequency(float): sampling frequency in Hz (default: 4096)
+   
+    Raises:
+        ValueError if farmes, channel names, or psds are not provided for some of the detectors in the interferometers list
+    Returns:
+        ifo objects with real data in the specified time segment.
+
+    """
+
     ifos = bilby.gw.detector.InterferometerList(interferometers)
 
     undefined_frames = set(interferometers) - set(frame_files.keys())
