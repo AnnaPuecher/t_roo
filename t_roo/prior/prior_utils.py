@@ -1,8 +1,18 @@
 from .prior_gw import ProbDistContainer
 
+"""
+Utility functions for priors.
+"""
 
 def compare_model_parameters(parameter_dict: dict[str, list[str]]) -> dict[str, set[int]]:
 
+    """
+    Function to find potential missing parameters in a model 
+    and their index.
+    
+    Args:
+        parameter_dict(dict): parameters dictionary    
+    """
     missing_params: dict[str, list] = dict()
     missing_params_inds: dict[str, list] = {model: [] for model in parameter_dict}
     parameter_sets = {model: set(params) for model, params in parameter_dict.items()}
@@ -36,6 +46,9 @@ def compare_model_parameters(parameter_dict: dict[str, list[str]]) -> dict[str, 
 
 def match_model_parameters(parameter_dict: dict[str, list[str]]) -> dict[str, list[str]]:
 
+    """
+    Function to insert potential missing parameters to a model
+    """
     parameter_dict = parameter_dict.copy()
 
     missing_params, missing_params_inds = compare_model_parameters(parameter_dict)
@@ -52,6 +65,10 @@ def match_model_parameters(parameter_dict: dict[str, list[str]]) -> dict[str, li
 
 
 def check_parameter_order(priors: dict[str, ProbDistContainer]) -> tuple:
+
+    """
+    Checks which parameters are in the prior of a model and if their names are consistent across models.
+    """
 
     parameter_names = {model: list(prior.priors_in.keys()) for model, prior in priors.items()}
 

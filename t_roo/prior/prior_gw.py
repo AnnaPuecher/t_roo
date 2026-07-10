@@ -12,6 +12,12 @@ from ..cosmology import get_cosmology, z_at_value
 from .prior_base import Prior
 from ..logging import logger
 
+"""
+Prior classes specifically for GW data analysis, mostly inherited from bilby.
+ProbDistContainer from eryn, to create and handle prior dictionaries; 
+rvs methods to draw from priors
+"""
+
 try:
     import cupy as cp
 

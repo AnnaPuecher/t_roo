@@ -15,6 +15,15 @@ __all__ = ["State"]
 def initial_state_from_prior(priors,
                              nwalkers: int,
                              ntemps: int):
+    """
+    Function to create the initial state drawing values from the prior.
+    Args:
+        nwalkers(int): number of walkers
+        ntemps(int): number of temperatures
+    Returns: 
+        initial state for the sampler
+    """
+
     coords = {}
     inds={}
     

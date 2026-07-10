@@ -2,6 +2,10 @@ import numpy as np
 from scipy import stats
 from copy import deepcopy
 
+"""
+Module to define the prior class
+"""
+
 def infer_args_from_method(method):
 
     """ Infers all arguments of a method except for `self`                                                                                                                         
