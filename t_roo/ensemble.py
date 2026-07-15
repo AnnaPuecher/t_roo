@@ -71,6 +71,7 @@ class EnsembleSampler(object):
             (default: ``0``)
             Not directly used in t-roo because we always have a model either be used (one time) or not (so nleaves_min=0),
             but we keep it ensure dimension compatibility throughout the code.
+        rdm_seed (int): seed for random state generator to ensure reproducibility
         pool (object, optional): An object with a ``map`` method that follows the same
             calling sequence as the built-in ``map`` function. This is
             generally used to compute the log-probabilities for the ensemble
@@ -129,6 +130,7 @@ class EnsembleSampler(object):
         nbranches=1,
         nleaves_max=1,
         nleaves_min=0,
+        rdm_seed = None,
         pool=None,
         moves=None,
         rj_moves=None,
@@ -402,6 +404,7 @@ class EnsembleSampler(object):
         # This is a random number generator that we can easily set the state
         # of without affecting the numpy-wide generator
         if random_state is None:
+                np.random.seed(rdm_seed)
                 random_state = np.random.get_state()
         self._random = np.random.mtrand.RandomState()
         self._random.set_state(random_state)
