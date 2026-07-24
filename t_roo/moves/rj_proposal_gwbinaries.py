@@ -642,7 +642,7 @@ class GWBinariesRJ(ReversibleJumpMove):
         # update mass ratio
         idx_mratio = self.params_to_inds["mass_ratio"]
         old_mratio_nsbh = old_coords[inds_to_change][:,idx_mratio]
-        new_mratio_bns = old_mratio_nsbh - self.slope_mratio_lambdaT_bbh_bns * (old_lambdaT_nsbh - new_lambdaT_bns)
+        new_mratio_bns = old_mratio_nsbh - self.slope_mratio_lambdaT_bns_nsbh * (old_lambdaT_nsbh - new_lambdaT_bns)
         coords_change[:, idx_mratio] = new_mratio_bns
 
 
@@ -719,7 +719,7 @@ class GWBinariesRJ(ReversibleJumpMove):
         # update mass ratio
         idx_mratio = self.params_to_inds["mass_ratio"]
         old_mratio_bns = old_coords[inds_to_change][:,idx_mratio]
-        new_mratio_nsbh = old_mratio_bns + self.slope_mratio_lambdaT_bbh_bns * (new_lambdaT_nsbh - old_lambdaT_bns)
+        new_mratio_nsbh = old_mratio_bns + self.slope_mratio_lambdaT_bns_nsbh * (new_lambdaT_nsbh - old_lambdaT_bns)
         coords_change[:, idx_mratio] = new_mratio_nsbh
 
 
