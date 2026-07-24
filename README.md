@@ -28,11 +28,13 @@ pip install .
 
 ### Documentation
 
-Complete documentation can be found here: [t-too docs](https://t-roo.readthedocs.io/en/latest/)
+Complete documentation can be found here: [t-roo docs](https://t-roo.readthedocs.io/en/latest/)
 
-Example scripts to run t-roo on injections and real data are provided in
+Example scripts to run t-roo on injections and real data are provided in:
 
 ### Citation
+
+If you use t-roo please cite the t-roo paper: [t-roo paper](https://arxiv.org/abs/2607.21484)
 
 ### Acknowledgements
 
